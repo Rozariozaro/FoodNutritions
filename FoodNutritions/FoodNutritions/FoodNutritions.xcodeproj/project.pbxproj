@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		B79AB4032F64160800DCAC8F /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B79AB4022F64160700DCAC8F /* Config.xcconfig */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		B79AB37B2F640A8A00DCAC8F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +31,7 @@
 		B79AB36B2F640A8700DCAC8F /* FoodNutritions.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FoodNutritions.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B79AB37A2F640A8A00DCAC8F /* FoodNutritionsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FoodNutritionsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B79AB3842F640A8A00DCAC8F /* FoodNutritionsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FoodNutritionsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B79AB4022F64160700DCAC8F /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -79,6 +84,7 @@
 				B79AB37D2F640A8A00DCAC8F /* FoodNutritionsTests */,
 				B79AB3872F640A8A00DCAC8F /* FoodNutritionsUITests */,
 				B79AB36C2F640A8700DCAC8F /* Products */,
+				B79AB4022F64160700DCAC8F /* Config.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -212,6 +218,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B79AB4032F64160800DCAC8F /* Config.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,6 +278,7 @@
 /* Begin XCBuildConfiguration section */
 		B79AB38C2F640A8A00DCAC8F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B79AB4022F64160700DCAC8F /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -335,6 +343,7 @@
 		};
 		B79AB38D2F640A8A00DCAC8F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B79AB4022F64160700DCAC8F /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -399,7 +408,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = U3V9BNQN65;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -431,7 +441,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = U3V9BNQN65;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
