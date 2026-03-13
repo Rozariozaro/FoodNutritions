@@ -1,6 +1,12 @@
 import Foundation
 
-final class FoodRepository {
+protocol FoodRepositoryProtocol {
+    func searchFoods(query: String, limit: Int, filters: SearchFilters) async throws -> [FoodItem]
+    func autocomplete(query: String, limit: Int) async throws -> [AutocompleteSuggestion]
+    func bulkNutrition(items: [MealItemRequest]) async throws -> NutritionResponse
+}
+
+final class FoodRepository: FoodRepositoryProtocol {
     private let client: FoodAPIClientProtocol
     private var cache: [String: CacheEntry] = [:]
     private let cacheTTL: TimeInterval = 24 * 60 * 60

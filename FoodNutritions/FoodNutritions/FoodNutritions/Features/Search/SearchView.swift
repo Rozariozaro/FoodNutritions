@@ -82,7 +82,7 @@ struct SearchView: View {
             ScrollView {
                 LazyVStack(spacing: 0) {
                     if let error = processor.state.errorMessage {
-                        errorBanner(message: error)
+                        ErrorBanner(message: error)
                     }
                     if processor.state.searchResults.isEmpty && processor.state.query.isEmpty {
                         recentSearchesSection
@@ -185,7 +185,15 @@ struct SearchView: View {
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                 Spacer()
-                sortPicker
+                SortMenuView(
+                    title: "Sort",
+                    selectedOption: Binding(
+                        get: { processor.state.sortOption },
+                        set: { processor.send(.sortChanged($0)) }
+                    ),
+                    options: SearchState.SortOption.allCases,
+                    onOptionSelected: { processor.send(.sortChanged($0)) }
+                )
             }
             .padding(.top, 8)
 
@@ -198,24 +206,6 @@ struct SearchView: View {
         }
     }
 
-    private var sortPicker: some View {
-        Menu {
-            ForEach(SearchState.SortOption.allCases) { option in
-                Button {
-                    processor.send(.sortChanged(option))
-                } label: {
-                    if processor.state.sortOption == option {
-                        Label(option.rawValue, systemImage: "checkmark")
-                    } else {
-                        Text(option.rawValue)
-                    }
-                }
-            }
-        } label: {
-            Label("Sort: \(processor.state.sortOption.rawValue)", systemImage: "arrow.up.arrow.down")
-                .font(.subheadline)
-        }
-    }
 
     // MARK: - Empty State
 
@@ -234,21 +224,6 @@ struct SearchView: View {
         .padding(.top, 40)
     }
 
-    // MARK: - Error Banner
-
-    private func errorBanner(message: String) -> some View {
-        HStack {
-            Image(systemName: "wifi.exclamationmark")
-            Text(message)
-                .font(.footnote)
-        }
-        .foregroundStyle(.white)
-        .padding(12)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.red.opacity(0.85))
-        .clipShape(RoundedRectangle(cornerRadius: 10))
-        .padding(.top, 8)
-    }
 
     // MARK: - Filter Sheet
 

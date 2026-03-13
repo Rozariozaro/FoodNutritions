@@ -32,5 +32,7 @@ struct CalorieRingView: View {
             }
         }
         .frame(width: size, height: size)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(Int(current)) of \(Int(goal)) kilocalories, \(Int(progress * 100)) percent")
     }
 }

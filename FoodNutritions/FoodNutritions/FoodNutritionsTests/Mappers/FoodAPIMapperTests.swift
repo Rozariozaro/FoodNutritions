@@ -43,10 +43,10 @@ final class FoodAPIMapperTests: XCTestCase {
         XCTAssertEqual(micros.count, 2)
         let fiber = micros.first { $0.name == "Fiber" }
         let sodium = micros.first { $0.name == "Sodium" }
-        XCTAssertEqual(fiber?.value, 2.5, accuracy: 0.001)
-        XCTAssertEqual(fiber?.unit, "g")
-        XCTAssertEqual(sodium?.value, 150, accuracy: 0.001)
-        XCTAssertEqual(sodium?.unit, "mg")
+        XCTAssertEqual(fiber!.value, 2.5, accuracy: 0.001)
+        XCTAssertEqual(fiber!.unit, "g")
+        XCTAssertEqual(sodium!.value, 150, accuracy: 0.001)
+        XCTAssertEqual(sodium!.unit, "mg")
     }
 
     func test_micronutrients_nilFiberAndSodiumYieldsEmpty() {

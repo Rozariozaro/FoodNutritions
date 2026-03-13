@@ -5,13 +5,19 @@ import Observation
 final class SearchProcessor {
     private(set) var state = SearchState()
 
-    private let foodRepository: FoodRepository
+    private let foodRepository: FoodRepositoryProtocol
     private let recentSearchRepository: RecentSearchRepositoryProtocol
+    let networkMonitor: NetworkMonitor
     private var debounceTask: Task<Void, Never>?
 
-    init(foodRepository: FoodRepository, recentSearchRepository: RecentSearchRepositoryProtocol) {
+    init(
+        foodRepository: FoodRepositoryProtocol,
+        recentSearchRepository: RecentSearchRepositoryProtocol,
+        networkMonitor: NetworkMonitor
+    ) {
         self.foodRepository = foodRepository
         self.recentSearchRepository = recentSearchRepository
+        self.networkMonitor = networkMonitor
     }
 
     func send(_ intent: SearchIntent) {
@@ -67,7 +73,7 @@ final class SearchProcessor {
 
     private func fetchAutocomplete(query: String) async {
         do {
-            let suggestions = try await foodRepository.autocomplete(query: query)
+            let suggestions = try await foodRepository.autocomplete(query: query, limit: 10)
             guard !Task.isCancelled else { return }
             state.autocompleteSuggestions = suggestions
         } catch {
@@ -79,7 +85,7 @@ final class SearchProcessor {
         state.isLoading = true
         state.errorMessage = nil
         do {
-            let results = try await foodRepository.searchFoods(query: query, filters: state.filters)
+            let results = try await foodRepository.searchFoods(query: query, limit: 20, filters: state.filters)
             state.searchResults = applySort(to: results, option: state.sortOption)
             state.autocompleteSuggestions = []
             recentSearchRepository.saveSearch(query)
