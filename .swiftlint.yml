@@ -1,0 +1,16 @@
+line_length: 300
+
+opt_in_rules:
+  - empty_count
+  - explicit_init
+  - first_where
+  - force_unwrapping
+  - implicitly_unwrapped_optional
+
+disabled_rules:
+  - trailing_whitespace
+
+excluded:
+  - .build
+  - DerivedData
+  - Pods
