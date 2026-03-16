@@ -1,0 +1,159 @@
+{
+  "design_system": {
+    "name": "Food Nutritions Design System",
+    "version": "1.0.0",
+    "foundation": {
+      "typography": {
+        "font_family": "Inter",
+        "scale": {
+          "large_title": { "size": "34pt", "weight": "Bold" },
+          "title_1": { "size": "28pt", "weight": "Bold" },
+          "title_2": { "size": "22pt", "weight": "Semibold" },
+          "headline": { "size": "17pt", "weight": "Semibold" },
+          "body": { "size": "17pt", "weight": "Regular" },
+          "subhead": { "size": "15pt", "weight": "Regular" },
+          "footnote": { "size": "13pt", "weight": "Regular" },
+          "caption_1": { "size": "12pt", "weight": "Medium" }
+        }
+      },
+      "geometry": {
+        "border_radius": {
+          "sm": "8px",
+          "md": "12px",
+          "lg": "16px",
+          "full": "999px"
+        },
+        "spacing_scale": [4, 8, 16, 24, 32, 48]
+      },
+      "shadows": {
+        "card_soft": "0px 4px 12px rgba(0, 0, 0, 0.05)"
+      }
+    },
+    "color_palettes": {
+      "light": {
+        "background": {
+          "bg_light": "#F8F9FA",
+          "surface": "#FFFFFF"
+        },
+        "brand": {
+          "primary": "#007AFF",
+          "text": "#111827"
+        },
+        "nutrition": {
+          "protein": "#3B82F6",
+          "carbs": "#22C55E",
+          "fat": "#F59E0B",
+          "error": "#EF4444"
+        }
+      },
+      "dark": {
+        "background": {
+          "bg_dark": "#0A0A0A",
+          "surface": "#1C1C1E",
+          "surface_elevated": "#2C2C2E"
+        },
+        "brand": {
+          "primary": "#0A84FF",
+          "text_primary": "#FFFFFF",
+          "text_secondary": "#A1A1AA"
+        },
+        "nutrition": {
+          "protein": "#60A5FA",
+          "carbs": "#4ADE80",
+          "fat": "#FBBF24",
+          "error": "#F87171"
+        },
+        "ui": {
+          "separator": "#38383A",
+          "accent_low_contrast": "rgba(10, 132, 255, 0.15)"
+        }
+      }
+    },
+    "component_primitives": {
+      "buttons": {
+        "primary": {
+          "background": "$brand.primary",
+          "text_color": "#FFFFFF",
+          "border_radius": "12px",
+          "padding_vertical": "16px",
+          "padding_horizontal": "24px",
+          "font_weight": "Semibold",
+          "font_size": "17pt"
+        },
+        "secondary": {
+          "background": "rgba(0, 122, 255, 0.1)",
+          "text_color": "$brand.primary",
+          "border_radius": "12px",
+          "padding_vertical": "16px",
+          "font_weight": "Semibold"
+        },
+        "tertiary": {
+          "background": "#F2F2F7",
+          "text_color": "$brand.text",
+          "border_radius": "12px",
+          "padding_vertical": "16px",
+          "font_weight": "Semibold"
+        }
+      },
+      "cards": {
+        "standard": {
+          "background": "$background.surface",
+          "border_radius": "16px",
+          "padding": "16px",
+          "shadow": "0px 4px 12px rgba(0, 0, 0, 0.05)",
+          "spacing_internal": "8px"
+        },
+        "highlighted": {
+          "background": "rgba(0, 122, 255, 0.05)",
+          "border_color": "rgba(0, 122, 255, 0.1)",
+          "border_width": "1px",
+          "border_radius": "16px",
+          "padding": "16px"
+        }
+      },
+      "progress_indicators": {
+        "circular": {
+          "stroke_width": "8px",
+          "track_color": "#F2F2F7",
+          "font_weight": "Bold"
+        },
+        "linear": {
+          "height": "8px",
+          "track_color": "#F2F2F7",
+          "border_radius": "4px",
+          "spacing_label": "8px"
+        }
+      },
+      "pills_chips": {
+        "base": {
+          "border_radius": "999px",
+          "padding_vertical": "8px",
+          "padding_horizontal": "16px",
+          "font_size": "13pt",
+          "font_weight": "Medium"
+        },
+        "selected": {
+          "background": "$brand.primary",
+          "text_color": "#FFFFFF"
+        },
+        "unselected": {
+          "background": "#F2F2F7",
+          "text_color": "$brand.text"
+        }
+      },
+      "list_items": {
+        "container": {
+          "background": "$background.surface",
+          "border_radius": "16px",
+          "padding": "16px",
+          "separator_color": "#F2F2F7"
+        },
+        "icon_box": {
+          "background": "rgba(0, 122, 255, 0.05)",
+          "border_radius": "12px",
+          "size": "44px"
+        }
+      }
+    }
+  }
+}
