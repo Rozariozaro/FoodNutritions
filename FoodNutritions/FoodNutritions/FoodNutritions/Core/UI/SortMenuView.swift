@@ -5,7 +5,7 @@ struct SortMenuView<Option: Identifiable & RawRepresentable>: View where Option.
     @Binding var selectedOption: Option
     let options: [Option]
     let onOptionSelected: (Option) -> Void
-    
+
     var body: some View {
         Menu {
             ForEach(options) { option in
@@ -21,11 +21,11 @@ struct SortMenuView<Option: Identifiable & RawRepresentable>: View where Option.
             }
         } label: {
             Label("\(title): \(selectedOption.rawValue)", systemImage: "arrow.up.arrow.down")
-                .font(.subheadline)
+                .font(AppTypography.subhead)
                 .fontWeight(.medium)
-                .padding(.vertical, 4)
-                .padding(.horizontal, 8)
-                .background(Color(.secondarySystemBackground))
+                .padding(.vertical, AppSpacing.xs)
+                .padding(.horizontal, AppSpacing.sm)
+                .background(AppColors.surface)
                 .clipShape(Capsule())
         }
     }

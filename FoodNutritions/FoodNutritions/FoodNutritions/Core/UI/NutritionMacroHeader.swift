@@ -5,42 +5,42 @@ struct NutritionMacroHeader: View {
     let protein: Double
     let carbs: Double
     let fat: Double
-    
+
     var body: some View {
-        HStack(spacing: 32) {
+        HStack(spacing: AppSpacing.xl) {
             CalorieRingView(
                 current: calories,
                 goal: NutritionGoals.calories,
-                ringColor: .orange,
                 size: 140
             )
 
-            VStack(alignment: .leading, spacing: 12) {
-                macroRow(label: "Protein", value: protein, goal: NutritionGoals.protein, color: .blue)
-                macroRow(label: "Carbs", value: carbs, goal: NutritionGoals.carbs, color: .green)
-                macroRow(label: "Fat", value: fat, goal: NutritionGoals.fat, color: .orange)
+            VStack(alignment: .leading, spacing: AppSpacing.smMd) {
+                macroRow(label: "Protein", value: protein, goal: NutritionGoals.protein, color: AppColors.protein)
+                macroRow(label: "Carbs", value: carbs, goal: NutritionGoals.carbs, color: AppColors.carbs)
+                macroRow(label: "Fat", value: fat, goal: NutritionGoals.fat, color: AppColors.fat)
             }
         }
-        .padding()
-        .background(Color(.secondarySystemBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 20))
+        .padding(AppSpacing.md)
+        .background(AppColors.surface)
+        .clipShape(RoundedRectangle(cornerRadius: AppRadius.lg))
     }
-    
+
     private func macroRow(label: String, value: Double, goal: Double, color: Color) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: AppSpacing.xs) {
             HStack {
                 Text(label)
-                    .font(.caption.bold())
+                    .font(AppTypography.caption1.bold())
                 Spacer()
                 Text("\(Int(value))g")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .font(AppTypography.caption1)
+                    .foregroundStyle(AppColors.textSecondary)
             }
             ProgressView(value: min(goal > 0 ? value / goal : 0, 1.0))
                 .progressViewStyle(.linear)
                 .tint(color)
+                .animation(.easeInOut(duration: 0.3), value: min(goal > 0 ? value / goal : 0, 1.0))
         }
-        .frame(width: 120)
+        .frame(minWidth: 100)
     }
 }
 

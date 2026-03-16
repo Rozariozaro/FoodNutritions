@@ -5,49 +5,51 @@ struct NutritionSummaryView: View {
     let protein: Double
     let carbs: Double
     let fat: Double
-    
+
     var body: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: AppSpacing.smMd) {
             HStack {
                 VStack(alignment: .leading) {
-                    Text("\(Int(calories))")
-                        .font(.title.bold())
+                    Text(calories, format: .number.precision(.fractionLength(0)))
+                        .font(AppTypography.title1.bold())
+                        .contentTransition(.numericText())
+                        .animation(.default, value: calories)
                     Text("Total Calories")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .font(AppTypography.caption1)
+                        .foregroundStyle(AppColors.textSecondary)
                 }
-                
+
                 Spacer()
-                
+
                 CalorieRingView(
                     current: calories,
                     goal: NutritionGoals.calories,
                     size: 60
                 )
             }
-            
-            VStack(spacing: 8) {
+
+            VStack(spacing: AppSpacing.sm) {
                 MacroProgressBar(
                     label: "Protein",
                     current: protein,
                     goal: NutritionGoals.protein,
-                    color: .blue
+                    color: AppColors.protein
                 )
                 MacroProgressBar(
                     label: "Carbs",
                     current: carbs,
                     goal: NutritionGoals.carbs,
-                    color: .green
+                    color: AppColors.carbs
                 )
                 MacroProgressBar(
                     label: "Fat",
                     current: fat,
                     goal: NutritionGoals.fat,
-                    color: .orange
+                    color: AppColors.fat
                 )
             }
         }
-        .padding(.vertical, 8)
+        .padding(.vertical, AppSpacing.sm)
     }
 }
 

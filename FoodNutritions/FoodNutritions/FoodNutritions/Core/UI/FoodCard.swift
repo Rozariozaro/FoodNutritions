@@ -4,36 +4,38 @@ struct FoodCard: View {
     let food: FoodItem
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: AppSpacing.sm) {
             HStack {
-                VStack(alignment: .leading, spacing: 2) {
+                VStack(alignment: .leading, spacing: AppSpacing.xs) {
                     Text(food.name)
-                        .font(.headline)
+                        .font(AppTypography.headline)
                         .lineLimit(2)
                     Text(food.type.rawValue.capitalized)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .font(AppTypography.caption1)
+                        .foregroundStyle(AppColors.textSecondary)
                 }
                 Spacer()
-                VStack(alignment: .trailing, spacing: 2) {
+                VStack(alignment: .trailing, spacing: AppSpacing.xs) {
                     Text(String(format: "%.0f kcal", food.caloriesPer100g))
-                        .font(.subheadline.bold())
+                        .font(AppTypography.subhead.bold())
                     Text("per 100g")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .font(AppTypography.caption1)
+                        .foregroundStyle(AppColors.textSecondary)
                 }
             }
 
-            HStack(spacing: 16) {
-                MacroChip(label: "P", value: food.proteinPer100g, color: .blue)
-                MacroChip(label: "C", value: food.carbsPer100g, color: .green)
-                MacroChip(label: "F", value: food.fatPer100g, color: .orange)
+            HStack(spacing: AppSpacing.md) {
+                MacroChip(label: "P", value: food.proteinPer100g, color: AppColors.protein)
+                MacroChip(label: "C", value: food.carbsPer100g, color: AppColors.carbs)
+                MacroChip(label: "F", value: food.fatPer100g, color: AppColors.fat)
             }
         }
-        .padding(12)
-        .background(.background)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-        .shadow(color: .black.opacity(0.06), radius: 4, x: 0, y: 2)
+        .padding(AppSpacing.smMd)
+        .background(AppColors.surface)
+        .clipShape(RoundedRectangle(cornerRadius: AppRadius.md))
+        .appShadowSoft()
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(food.name), \(Int(food.caloriesPer100g)) kilocalories per 100 grams, protein \(Int(food.proteinPer100g)) grams, carbs \(Int(food.carbsPer100g)) grams, fat \(Int(food.fatPer100g)) grams")
     }
 }
 
@@ -43,13 +45,13 @@ private struct MacroChip: View {
     let color: Color
 
     var body: some View {
-        HStack(spacing: 2) {
+        HStack(spacing: AppSpacing.xs) {
             Text(label)
-                .font(.caption2.bold())
+                .font(AppTypography.caption1.bold())
                 .foregroundStyle(color)
             Text(String(format: "%.1fg", value))
-                .font(.caption2)
-                .foregroundStyle(.secondary)
+                .font(AppTypography.caption1)
+                .foregroundStyle(AppColors.textSecondary)
         }
     }
 }

@@ -3,23 +3,23 @@ import SwiftUI
 struct FoodDetailSection<Content: View>: View {
     let title: String?
     let content: Content
-    
+
     init(title: String? = nil, @ViewBuilder content: () -> Content) {
         self.title = title
         self.content = content()
     }
-    
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: AppSpacing.md) {
             if let title {
                 Text(title)
-                    .font(.headline)
+                    .font(AppTypography.headline)
             }
-            
+
             content
         }
-        .padding()
-        .background(Color(.secondarySystemBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 20))
+        .padding(AppSpacing.md)
+        .background(AppColors.surface)
+        .clipShape(RoundedRectangle(cornerRadius: AppRadius.lg))
     }
 }

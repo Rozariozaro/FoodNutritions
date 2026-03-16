@@ -1,3 +1,4 @@
+// See also: Core/DesignTokens/ListItemRow.swift (generic HStack layout wrapper)
 import SwiftUI
 
 struct MealItemRow: View {
@@ -7,26 +8,25 @@ struct MealItemRow: View {
     let protein: Double
     let carbs: Double
     let fat: Double
-    
+
     var body: some View {
         HStack {
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: AppSpacing.xs) {
                 Text(foodName)
-                    .font(.headline)
+                    .font(AppTypography.headline)
                 Text("\(Int(servingGrams))g")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .font(AppTypography.subhead)
+                    .foregroundStyle(AppColors.textSecondary)
             }
-            
+
             Spacer()
-            
-            VStack(alignment: .trailing) {
+
+            VStack(alignment: .trailing, spacing: AppSpacing.xs) {
                 Text("\(Int(calories)) kcal")
-                    .font(.subheadline)
-                    .bold()
+                    .font(AppTypography.subhead.bold())
                 Text("P: \(Int(protein))g • C: \(Int(carbs))g • F: \(Int(fat))g")
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
+                    .font(AppTypography.caption1)
+                    .foregroundStyle(AppColors.textSecondary)
             }
         }
         .contentShape(Rectangle())

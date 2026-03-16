@@ -2,24 +2,24 @@ import SwiftUI
 
 struct ErrorBanner: View {
     let message: String
-    
+
     var body: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: AppSpacing.smMd) {
             Image(systemName: "exclamationmark.triangle.fill")
                 .symbolRenderingMode(.multicolor)
             Text(message)
-                .font(.footnote)
+                .font(AppTypography.footnote)
                 .fontWeight(.medium)
         }
         .foregroundStyle(.white)
-        .padding(12)
+        .padding(AppSpacing.smMd)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color.red.gradient)
+            RoundedRectangle(cornerRadius: AppRadius.md)
+                .fill(AppColors.error.gradient)
                 .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
         )
-        .padding(.vertical, 8)
+        .padding(.vertical, AppSpacing.sm)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Error: \(message)")
         .accessibilityAddTraits(.isStaticText)

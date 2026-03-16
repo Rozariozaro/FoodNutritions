@@ -2,15 +2,15 @@ import SwiftUI
 
 struct MicronutrientListView: View {
     let micronutrients: [Micronutrient]
-    
+
     var body: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: AppSpacing.sm) {
             ForEach(Array(micronutrients.enumerated()), id: \.element.name) { item in
                 HStack {
                     Text(item.element.name)
                     Spacer()
                     Text(String(format: "%.1f %@", item.element.value, item.element.unit))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(AppColors.textSecondary)
                 }
                 if item.offset < micronutrients.count - 1 {
                     Divider()

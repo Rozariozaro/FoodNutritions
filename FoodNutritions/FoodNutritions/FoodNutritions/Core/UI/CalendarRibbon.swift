@@ -4,13 +4,13 @@ struct CalendarRibbon: View {
     let availableDates: [Date]
     @Binding var selectedDate: Date
     let onDateSelected: (Date) -> Void
-    
+
     private let calendar = Calendar.current
-    
+
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 12) {
+                HStack(spacing: AppSpacing.smMd) {
                     ForEach(availableDates, id: \.self) { date in
                         DateCell(
                             date: date,
@@ -22,7 +22,7 @@ struct CalendarRibbon: View {
                     }
                 }
                 .padding(.horizontal)
-                .padding(.vertical, 8)
+                .padding(.vertical, AppSpacing.sm)
             }
             .onAppear {
                 proxy.scrollTo(selectedDate, anchor: .center)
@@ -33,7 +33,7 @@ struct CalendarRibbon: View {
                 }
             }
         }
-        .background(Color(.systemBackground))
+        .background(AppColors.background)
     }
 }
 
@@ -41,34 +41,36 @@ private struct DateCell: View {
     let date: Date
     let isSelected: Bool
     let action: () -> Void
-    
+
+    @ScaledMetric private var cellWidth: CGFloat = 50
+    @ScaledMetric private var cellHeight: CGFloat = 60
+
     private var isToday: Bool {
         Calendar.current.isDateInToday(date)
     }
-    
+
     var body: some View {
         Button(action: action) {
-            VStack(spacing: 4) {
+            VStack(spacing: AppSpacing.xs) {
                 Text(date.formatted(.dateTime.weekday(.abbreviated)))
-                    .font(.caption2)
-                    .fontWeight(.medium)
-                    .foregroundStyle(isSelected ? .white : .secondary)
-                
+                    .font(AppTypography.caption1.weight(.medium))
+                    .foregroundStyle(isSelected ? .white : AppColors.textSecondary)
+
                 Text(date.formatted(.dateTime.day()))
-                    .font(.headline)
-                    .foregroundStyle(isSelected ? .white : .primary)
+                    .font(AppTypography.headline)
+                    .foregroundStyle(isSelected ? .white : AppColors.textPrimary)
             }
-            .frame(width: 50, height: 60)
+            .frame(width: cellWidth, height: cellHeight)
             .background {
                 if isSelected {
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.blue.gradient)
+                    RoundedRectangle(cornerRadius: AppRadius.md)
+                        .fill(AppColors.primary.gradient)
                 } else if isToday {
-                     RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color.blue, lineWidth: 1)
+                     RoundedRectangle(cornerRadius: AppRadius.md)
+                        .stroke(AppColors.primary, lineWidth: 1)
                 } else {
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color(.secondarySystemBackground))
+                    RoundedRectangle(cornerRadius: AppRadius.md)
+                        .fill(AppColors.surface)
                 }
             }
         }
