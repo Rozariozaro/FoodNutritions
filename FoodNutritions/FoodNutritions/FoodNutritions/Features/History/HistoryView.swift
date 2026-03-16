@@ -1,8 +1,12 @@
 import SwiftUI
 
 struct HistoryView: View {
-    @State var processor: HistoryProcessor
+    @Bindable var processor: HistoryProcessor
     var onMealSelected: (MealRecord) -> Void
+
+    private var dailyTotals: DailySummary {
+        DailySummary.from(meals: processor.state.meals)
+    }
     
     var body: some View {
         VStack(spacing: 0) {
@@ -54,14 +58,14 @@ struct HistoryView: View {
             List {
                 Section {
                     NutritionSummaryView(
-                        calories: processor.state.meals.reduce(0) { $0 + DailySummary.from(items: $1.items).calories },
-                        protein: processor.state.meals.reduce(0) { $0 + DailySummary.from(items: $1.items).protein },
-                        carbs: processor.state.meals.reduce(0) { $0 + DailySummary.from(items: $1.items).carbs },
-                        fat: processor.state.meals.reduce(0) { $0 + DailySummary.from(items: $1.items).fat }
+                        calories: dailyTotals.calories,
+                        protein: dailyTotals.protein,
+                        carbs: dailyTotals.carbs,
+                        fat: dailyTotals.fat
                     )
                 }
                 .listRowBackground(Color.clear)
-                .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
+                .listRowInsets(EdgeInsets(top: AppSpacing.sm, leading: 0, bottom: AppSpacing.sm, trailing: 0))
 
                 Section("Meals") {
                     ForEach(processor.state.meals) { meal in

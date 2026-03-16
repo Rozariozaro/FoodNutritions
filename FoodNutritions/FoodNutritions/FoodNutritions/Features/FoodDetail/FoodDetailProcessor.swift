@@ -24,7 +24,10 @@ final class FoodDetailProcessor {
             } else {
                 state.quantity = 1.0
             }
-            state.errorMessage = nil
+            // FUNC-07: only clear validation error if the current quantity is valid
+            if state.quantity > 0 {
+                state.errorMessage = nil
+            }
 
         case .quantityChanged(let quantity):
             if quantity <= 0 {

@@ -1,17 +1,11 @@
 import SwiftUI
 
 struct SearchView: View {
-    @State private var processor: SearchProcessor
-    @State private var isSearchBarFocused: Bool = false
+    @Bindable var processor: SearchProcessor
     @State private var showFilterSheet: Bool = false
     @FocusState private var searchFieldFocused: Bool
 
     let onFoodSelected: (FoodItem) -> Void
-
-    init(processor: SearchProcessor, onFoodSelected: @escaping (FoodItem) -> Void) {
-        self._processor = State(initialValue: processor)
-        self.onFoodSelected = onFoodSelected
-    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -34,7 +28,7 @@ struct SearchView: View {
     // MARK: - Search Bar
 
     private var searchBar: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: AppSpacing.sm) {
             HStack {
                 Image(systemName: "magnifyingglass")
                     .foregroundStyle(.secondary)
@@ -46,11 +40,6 @@ struct SearchView: View {
                 .autocorrectionDisabled()
                 .submitLabel(.search)
                 .onSubmit { processor.submitSearch() }
-                .onChange(of: searchFieldFocused) { _, focused in
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        isSearchBarFocused = focused
-                    }
-                }
                 if !processor.state.query.isEmpty {
                     Button { processor.send(.queryChanged("")) } label: {
                         Image(systemName: "xmark.circle.fill")
@@ -58,20 +47,21 @@ struct SearchView: View {
                     }
                 }
             }
-            .padding(10)
-            .background(.quaternary)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .padding(AppSpacing.sm)
+            .background(AppColors.surface)
+            .clipShape(RoundedRectangle(cornerRadius: AppRadius.md))
 
-            if isSearchBarFocused {
+            if searchFieldFocused {
                 Button("Cancel") {
+                    // UI-07: dismiss keyboard only, preserve query and results
                     searchFieldFocused = false
-                    processor.send(.queryChanged(""))
                 }
                 .transition(.move(edge: .trailing).combined(with: .opacity))
+                .animation(.easeInOut(duration: 0.2), value: searchFieldFocused)
             }
         }
         .padding(.horizontal)
-        .padding(.vertical, 8)
+        .padding(.vertical, AppSpacing.sm)
     }
 
     // MARK: - Main Content
@@ -96,7 +86,7 @@ struct SearchView: View {
                 .padding(.top, processor.state.autocompleteSuggestions.isEmpty ? 0 : 8)
             }
 
-            if !processor.state.autocompleteSuggestions.isEmpty && isSearchBarFocused {
+            if !processor.state.autocompleteSuggestions.isEmpty && searchFieldFocused {
                 autocompleteOverlay
             }
         }
@@ -115,25 +105,25 @@ struct SearchView: View {
                     HStack {
                         Image(systemName: "magnifyingglass")
                             .foregroundStyle(.secondary)
-                            .font(.caption)
+                            .font(AppTypography.caption1)
                         Text(suggestion.name)
                             .foregroundStyle(.primary)
                         Spacer()
                         Text(suggestion.type.capitalized)
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .font(AppTypography.caption1)
+                            .foregroundStyle(AppColors.textSecondary)
                     }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 12)
+                    .padding(.horizontal, AppSpacing.md)
+                    .padding(.vertical, AppSpacing.smMd)
                 }
-                Divider().padding(.leading, 16)
+                Divider().padding(.leading, AppSpacing.md)
             }
         }
-        .background(.regularMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-        .shadow(color: .black.opacity(0.12), radius: 8, x: 0, y: 4)
+        .background(AppColors.surfaceElevated)
+        .clipShape(RoundedRectangle(cornerRadius: AppRadius.md))
+        .appShadowSoft()
         .padding(.horizontal)
-        .padding(.top, 4)
+        .padding(.top, AppSpacing.xs)
         .transition(.opacity.combined(with: .move(edge: .top)))
         .animation(.easeInOut(duration: 0.15), value: processor.state.autocompleteSuggestions.count)
     }
@@ -143,11 +133,11 @@ struct SearchView: View {
     private var recentSearchesSection: some View {
         Group {
             if !processor.state.recentSearches.isEmpty {
-                VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: AppSpacing.sm) {
                     Text("Recent Searches")
-                        .font(.subheadline.bold())
-                        .foregroundStyle(.secondary)
-                        .padding(.top, 16)
+                        .font(AppTypography.subhead.bold())
+                        .foregroundStyle(AppColors.textSecondary)
+                        .padding(.top, AppSpacing.md)
                     ForEach(processor.state.recentSearches, id: \.self) { query in
                         Button {
                             processor.send(.queryChanged(query))
@@ -160,7 +150,7 @@ struct SearchView: View {
                                     .foregroundStyle(.primary)
                                 Spacer()
                             }
-                            .padding(.vertical, 8)
+                            .padding(.vertical, AppSpacing.sm)
                         }
                         Divider()
                     }
@@ -179,11 +169,11 @@ struct SearchView: View {
     // MARK: - Results
 
     private var resultsSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: AppSpacing.smMd) {
             HStack {
                 Text("\(processor.state.searchResults.count) results")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .font(AppTypography.subhead)
+                    .foregroundStyle(AppColors.textSecondary)
                 Spacer()
                 SortMenuView(
                     title: "Sort",
@@ -195,7 +185,7 @@ struct SearchView: View {
                     onOptionSelected: { processor.send(.sortChanged($0)) }
                 )
             }
-            .padding(.top, 8)
+            .padding(.top, AppSpacing.sm)
 
             ForEach(processor.state.searchResults) { food in
                 Button { onFoodSelected(food) } label: {
@@ -210,18 +200,18 @@ struct SearchView: View {
     // MARK: - Empty State
 
     private var emptyState: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: AppSpacing.md) {
             ContentUnavailableView.search(text: processor.state.query)
             if processor.state.filters.proteinMin > 0 ||
                processor.state.filters.caloriesMax < 10_000 ||
-               processor.state.filters.carbsMax < 10_000 {
+               processor.state.filters.carbsMax < 1_000 {
                 Button("Clear Filters") {
                     processor.send(.clearFilters)
                 }
                 .buttonStyle(.bordered)
             }
         }
-        .padding(.top, 40)
+        .padding(.top, AppSpacing.xl)
     }
 
 
@@ -254,7 +244,8 @@ struct SearchView: View {
     private var hasActiveFilters: Bool {
         processor.state.filters.proteinMin > 0 ||
         processor.state.filters.caloriesMax < 10_000 ||
-        processor.state.filters.carbsMax < 10_000
+        // UI-05: slider max is 1_000, so "active" means below that ceiling
+        processor.state.filters.carbsMax < 1_000
     }
 }
 

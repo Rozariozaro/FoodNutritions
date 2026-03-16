@@ -1,22 +1,21 @@
 import SwiftUI
 
 struct FoodDetailView: View {
-    @State var processor: FoodDetailProcessor
+    @Bindable var processor: FoodDetailProcessor
     var onItemAdded: (MealItem) -> Void
-    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 24) {
+            VStack(spacing: AppSpacing.lg) {
                 // Header
-                VStack(spacing: 8) {
+                VStack(spacing: AppSpacing.sm) {
                     Text(processor.state.foodItem.name)
-                        .font(.largeTitle.bold())
+                        .font(AppTypography.largeTitle.bold())
                         .multilineTextAlignment(.center)
-                    
+
                     Text(processor.state.foodItem.type.rawValue.capitalized)
-                        .font(.headline)
-                        .foregroundStyle(.secondary)
+                        .font(AppTypography.headline)
+                        .foregroundStyle(AppColors.textSecondary)
                 }
                 .padding(.top)
 
@@ -31,11 +30,11 @@ struct FoodDetailView: View {
                 // Servings & Quantity Section
                 FoodDetailSection(title: "Adjust Serving") {
                     HStack {
-                        VStack(alignment: .leading, spacing: 4) {
+                        VStack(alignment: .leading, spacing: AppSpacing.xs) {
                             Text("Unit")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                            
+                                .font(AppTypography.caption1)
+                                .foregroundStyle(AppColors.textSecondary)
+
                             Picker("Serving Unit", selection: Binding(
                                 get: { processor.state.selectedServingUnit },
                                 set: { processor.send(.servingUnitChanged($0)) }
@@ -49,10 +48,10 @@ struct FoodDetailView: View {
 
                         Spacer()
 
-                        VStack(alignment: .trailing, spacing: 4) {
+                        VStack(alignment: .trailing, spacing: AppSpacing.xs) {
                             Text("Quantity")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
+                                .font(AppTypography.caption1)
+                                .foregroundStyle(AppColors.textSecondary)
                             
                             TextField("Quantity", value: Binding(
                                 get: { processor.state.quantity },
@@ -66,9 +65,7 @@ struct FoodDetailView: View {
                     }
                     
                     if let error = processor.state.errorMessage {
-                        Text(error)
-                            .font(.caption)
-                            .foregroundStyle(.red)
+                        ErrorBanner(message: error)
                     }
                 }
 
@@ -76,7 +73,7 @@ struct FoodDetailView: View {
                 FoodDetailSection {
                     HStack {
                         Text("Micronutrients")
-                            .font(.headline)
+                            .font(AppTypography.headline)
                         Spacer()
                         Button(processor.state.isMicronutrientsVisible ? "Hide" : "Show") {
                             processor.send(.toggleMicronutrients)
@@ -90,9 +87,9 @@ struct FoodDetailView: View {
                                 .padding()
                         } else if processor.state.foodItem.micronutrients.isEmpty {
                             Text("Detailed nutrition not available")
-                                .font(.subheadline)
+                                .font(AppTypography.subhead)
                                 .italic()
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(AppColors.textSecondary)
                         } else {
                             MicronutrientListView(micronutrients: processor.state.foodItem.micronutrients)
                         }
@@ -100,37 +97,39 @@ struct FoodDetailView: View {
                 }
 
                 // Add to Meal Button
-                Button {
-                    let ctx = processor.state.nutritionContext
-                    let grams = processor.state.effectiveGrams
-                    let item = MealItem(
-                        apiItemId: processor.state.foodItem.id,
-                        apiItemType: processor.state.foodItem.type.rawValue,
-                        foodName: processor.state.foodItem.name,
-                        servingGrams: grams,
-                        calories: ctx.calories,
-                        protein: ctx.protein,
-                        carbs: ctx.carbs,
-                        fat: ctx.fat,
-                        fiber: ctx.micronutrients.first { $0.name == "Fiber" }?.value,
-                        sodiumMg: ctx.micronutrients.first { $0.name == "Sodium" }?.value
-                    )
-                    onItemAdded(item)
-                } label: {
+                Button(action: addToMeal) {
                     Text("Add to Meal")
-                        .font(.headline)
+                        .font(AppTypography.headline)
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(processor.state.errorMessage == nil ? Color.blue : Color.gray)
-                        .clipShape(RoundedRectangle(cornerRadius: 15))
+                        .padding(AppSpacing.md)
+                        .background(processor.state.errorMessage == nil ? AppColors.primary : AppColors.textSecondary)
+                        .clipShape(RoundedRectangle(cornerRadius: AppRadius.lg))
                 }
                 .disabled(processor.state.errorMessage != nil)
                 .padding(.top)
             }
             .padding()
         }
-        .navigationTitle("Details")
+        .navigationTitle(processor.state.foodItem.name)
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private func addToMeal() {
+        let ctx = processor.state.nutritionContext
+        let grams = processor.state.effectiveGrams
+        let item = MealItem(
+            apiItemId: processor.state.foodItem.id,
+            apiItemType: processor.state.foodItem.type.rawValue,
+            foodName: processor.state.foodItem.name,
+            servingGrams: grams,
+            calories: ctx.calories,
+            protein: ctx.protein,
+            carbs: ctx.carbs,
+            fat: ctx.fat,
+            fiber: ctx.micronutrients.first { $0.name == "Fiber" }?.value,
+            sodiumMg: ctx.micronutrients.first { $0.name == "Sodium" }?.value
+        )
+        onItemAdded(item)
     }
 }

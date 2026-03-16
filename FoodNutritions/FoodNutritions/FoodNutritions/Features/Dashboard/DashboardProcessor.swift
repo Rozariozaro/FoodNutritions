@@ -6,7 +6,8 @@ final class DashboardProcessor {
     private(set) var state: DashboardState
     private let mealRepository: MealRepositoryProtocol
     let networkMonitor: NetworkMonitor
-    
+    private var notificationTask: Task<Void, Never>?
+
     init(
         state: DashboardState = DashboardState(),
         mealRepository: MealRepositoryProtocol,
@@ -15,6 +16,17 @@ final class DashboardProcessor {
         self.state = state
         self.mealRepository = mealRepository
         self.networkMonitor = networkMonitor
+
+        // FUNC-03: reload when any meal is saved (e.g. from MealLog)
+        notificationTask = Task { @MainActor [weak self] in
+            for await _ in NotificationCenter.default.notifications(named: .mealDidSave) {
+                self?.send(.loadData)
+            }
+        }
+    }
+
+    deinit {
+        notificationTask?.cancel()
     }
     
     func send(_ intent: DashboardIntent) {

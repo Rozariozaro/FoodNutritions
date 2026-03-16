@@ -6,6 +6,7 @@ enum MealLogIntent {
     case mealTypeChanged(MealType)
     case saveMeal
     case loadMealForEditing(MealRecord)
+    case resetForNewMeal
     case resetNavigation
     case dismissError
 }

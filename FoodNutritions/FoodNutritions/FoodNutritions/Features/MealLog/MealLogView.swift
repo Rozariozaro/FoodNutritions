@@ -3,14 +3,20 @@ import SwiftUI
 struct MealLogView: View {
     @Bindable var processor: MealLogProcessor
     @Environment(\.dismiss) private var dismiss
-    
+    // FUNC-01: callback to push Search so user can add more food
+    var onAddFoodRequested: (() -> Void)?
+
     var body: some View {
         List {
             Section("Meal Items") {
                 if processor.state.items.isEmpty {
-                    Text("No items added yet.")
-                        .foregroundStyle(.secondary)
-                        .italic()
+                    // UI-08: empty-state with explanation when save is blocked
+                    ContentUnavailableView(
+                        "No Items Added",
+                        systemImage: "fork.knife",
+                        description: Text("Tap \"Add Food\" to search for items to include in this meal.")
+                    )
+                    .listRowSeparator(.hidden)
                 } else {
                     ForEach(processor.state.items) { item in
                         MealItemRow(
@@ -29,7 +35,7 @@ struct MealLogView: View {
                     }
                 }
             }
-            
+
             Section("Meal Details") {
                 Picker("Meal Type", selection: Binding(
                     get: { processor.state.selectedMealType },
@@ -40,7 +46,7 @@ struct MealLogView: View {
                     }
                 }
             }
-            
+
             Section("Nutrition Summary") {
                 NutritionSummaryView(
                     calories: processor.state.totals.calories,
@@ -52,6 +58,12 @@ struct MealLogView: View {
         }
         .navigationTitle(processor.state.isEditMode ? "Edit Meal" : "Log Meal")
         .toolbar {
+            // FUNC-01: Add Food button always visible so user can add items
+            ToolbarItem(placement: .topBarLeading) {
+                Button("Add Food") {
+                    onAddFoodRequested?()
+                }
+            }
             ToolbarItem(placement: .topBarTrailing) {
                 Button(processor.state.isEditMode ? "Update" : "Save") {
                     processor.send(.saveMeal)
@@ -63,9 +75,9 @@ struct MealLogView: View {
         .overlay {
             if processor.state.isSaving {
                 ProgressView("Saving Meal...")
-                    .padding()
-                    .background(.ultraThinMaterial)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .padding(AppSpacing.md)
+                    .background(AppColors.surfaceElevated)
+                    .clipShape(RoundedRectangle(cornerRadius: AppRadius.md))
             }
         }
         .alert("Error", isPresented: Binding(
@@ -89,7 +101,6 @@ struct MealLogView: View {
 
 #Preview {
     NavigationStack {
-        // NOTE: This preview needs mocks to work properly
         Text("MealLogView Preview")
     }
 }
